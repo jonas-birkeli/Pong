@@ -13,6 +13,7 @@ class GameSettings:
 
         self.mode = 1  # Single player as default
         self.difficulty = 1  # Easy as default
+        self.random_y_offset = 0.0
 
     def get_game_title(self) -> str:
         return self.game_title
@@ -49,3 +50,9 @@ class GameSettings:
 
     def set_difficulty(self, num: int):
         self.difficulty = num
+
+    def get_random_y_offset(self) -> float:
+        return self.random_y_offset
+
+    def set_random_y_offset(self, num: float):
+        self.random_y_offset = num
