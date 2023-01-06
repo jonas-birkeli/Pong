@@ -1,7 +1,9 @@
 import pygame
 import sys
+import socket
 import settings.constant as constant
 import settings.keybind as keybind
+from network.client import Client
 
 
 class Menu:
@@ -21,12 +23,20 @@ class Menu:
         self.start_sound = pygame.mixer.Sound('etc/start_win.wav')
         self.setting_change_sound = pygame.mixer.Sound('etc/setting.wav')
 
+        self.socket_game_start_await = False
+
     def start(self):
         while True:
-            start_game = self.key_input()
-            if start_game:
-                self.start_game()
-                return  # Exit loop
+            if not self.socket_game_start_await:
+                start_game = self.key_input()
+                if start_game:
+                    self.start_game()
+                    return  # Exit loop
+            else:
+                result = self.successful_connection()
+                if result == 1:
+                    self.start_game()
+                    return
 
             # middle of screen ref
             surface = pygame.display.get_surface()
@@ -36,7 +46,15 @@ class Menu:
             self.screen.fill(constant.BACKGROUND_COLOR)
             self.display_text(self.game_values.get_game_title(), sw2, sh2 - 200, self.big_font)
             self.display_text(constant.GAME_DEV, sw2, sh2-120, self.small_font)
-            self.display_text(self.game_values.get_start_text(), sw2, sh2, self.normal_font)
+
+            if self.socket_game_start_await:  # Using same position for different text
+                self.display_text(constant.CONNECTION_AWAIT_STATUS_TEXT, sw2, sh2, self.normal_font)
+                self.display_text(constant.CONNECTION_AWAIT_HINT_TEXT, sw2, sh2 + 300, self.small_font)
+            else:
+                self.display_text(self.game_values.get_start_text(), sw2, sh2, self.normal_font)
+                self.display_text(self.game_values.get_setting_text(), sw2, sh2 + 300, self.small_font)
+
+
 
             # Mode
             mode = self.game_values.get_mode()
@@ -59,7 +77,6 @@ class Menu:
             self.display_text(mode_text, sw2, sh2+100, self.normal_font)
             if mode == 1:
                 self.display_text(dif_text, sw2, sh2+150, self.normal_font)
-            self.display_text(self.game_values.get_setting_text(), sw2, sh2 + 300, self.small_font)
 
             pygame.display.update()
             self.fps.tick(constant.FPS)
@@ -67,10 +84,10 @@ class Menu:
     def key_input(self) -> bool:
         key_pressed = pygame.key.get_pressed()
         for event in pygame.event.get():
-            if key_pressed[keybind.QUIT_PROGRAM]:
+            if key_pressed[keybind.QUIT_PROGRAM]:  # Exit keybind
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:  # Exit from button
                 pygame.quit()
                 sys.exit()
 
@@ -84,9 +101,13 @@ class Menu:
                     self.change_dif(1)
                 if key_pressed[keybind.CHANGE_DIF_DOWN]:
                     self.change_dif(-1)
-        if key_pressed[keybind.START_GAME]:
-            self.start_game()
-            return True
+            if key_pressed[keybind.START_GAME]:  # Socket connection
+                if self.game_values.get_mode() == 3:
+                    self.socket_game_start_await = True
+                    self.game_values.set_socket(Client(constant.SERVER_HOST, constant.SERVER_PORT))
+                    return False
+                return True
+        return False
 
     def start_game(self):
         # Storing window size in case of window resize
@@ -108,7 +129,7 @@ class Menu:
 
     def change_dif(self, num):
         if not self.game_values.get_mode() == 1:
-            return  # Only allowing difficulty chaning when 1-player is selected
+            return  # Only allowing difficulty changing when 1-player is selected
         difficulty = self.game_values.get_difficulty()
         difficulty += num
         if difficulty > 3:
@@ -123,3 +144,35 @@ class Menu:
         txt_rect = txt.get_rect()
         txt_rect.center = x, y
         self.screen.blit(txt, txt_rect)
+
+    def successful_connection(self):
+        """
+        return -1 if cancel connection
+        return 0 if waiting for connection
+        return 1 if connection found
+        :return: int
+        """
+        self.game_values.get_socket().connect()
+
+        # Basic key handler
+        key_pressed = pygame.key.get_pressed()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if key_pressed[keybind.CANCEL_CONNECTION_AWAIT]:
+                self.socket_game_start_await = False
+                return -1
+        self.game_values.get_socket().receive_data()
+        if self.game_values.get_socket().id == 1:  # Last client to connect
+            return 1
+        if self.game_values.get_socket().game_started:  # First client
+            return 1  # start game
+        return 0
+
+
+
+
+
+
+

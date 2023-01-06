@@ -1,6 +1,8 @@
 FPS = 60
 GAME_NAME = 'Pong 1.5'
 POINT_LIMIT = 10  # Playing to and included
+SERVER_HOST = '127.0.0.1'
+SERVER_PORT = 8081
 
 BACKGROUND_COLOR = 47, 50, 58
 PADDLE_COLOR = 255, 255, 255
@@ -29,9 +31,9 @@ EASY_TEXT = '< Nybegynner >'
 HARD_TEXT = '< Vrien >'
 IMPOSSIBLE_TEXT = '< Vanskelig (umulig) >'
 
-ONE_PLAYER = '^ 1-spiller ^'
-TWO_PLAYER_LOCAL = '^ 2-spiller: Lokal ^'
-TWO_PLAYER_SOCKET = '^ 2-spiller: Socket ^'
+ONE_PLAYER = '1-spiller'
+TWO_PLAYER_LOCAL = '2-spiller: Lokal'
+TWO_PLAYER_SOCKET = '2-spiller: Socket'
 
 PAUSE_TEXT = 'Spill pauset!'
 UNPAUSE_TEXT = 'Trykk ESC for å fortsette'

@@ -15,6 +15,9 @@ class GameSettings:
         self.difficulty = 1  # Easy as default
         self.random_y_offset = 0.0
 
+        self.socket = None
+        self.first_client = None
+
     def get_game_title(self) -> str:
         return self.game_title
 
@@ -56,3 +59,15 @@ class GameSettings:
 
     def set_random_y_offset(self, num: float):
         self.random_y_offset = num
+
+    def set_socket(self, data):
+        self.socket = data
+
+    def get_socket(self):
+        return self.socket
+
+    def set_first_client(self, data):
+        self.first_client = data
+
+    def get_first_client(self):
+        return self.first_client
