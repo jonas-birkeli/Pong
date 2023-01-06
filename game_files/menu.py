@@ -1,6 +1,5 @@
 import pygame
 import sys
-import socket
 import settings.constant as constant
 import settings.keybind as keybind
 from network.client import Client
@@ -8,10 +7,10 @@ from network.client import Client
 
 class Menu:
     def __init__(self, game_settings):
+
         self.game_values = game_settings
 
         pygame.init()
-
         self.screen = pygame.display.set_mode(self.game_values.get_screen_size(), pygame.RESIZABLE, vsync=True)
         self.fps = pygame.time.Clock()
         pygame.display.set_caption(constant.GAME_NAME)
@@ -24,8 +23,9 @@ class Menu:
         self.setting_change_sound = pygame.mixer.Sound('etc/setting.wav')
 
         self.socket_game_start_await = False
+        # Waiting on second client to connect to socket if socket-connection is enabled
 
-    def start(self):
+    def run(self):
         while True:
             if not self.socket_game_start_await:
                 start_game = self.key_input()

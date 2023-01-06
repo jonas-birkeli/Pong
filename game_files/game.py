@@ -3,16 +3,14 @@ import pygame
 import settings.constant as constant
 import settings.keybind as keybind
 from game_files.entity_handler import EntityHandler
-from network.client import Client
 
 
 class Game:
     def __init__(self, game_values):
         self.game_values = game_values
 
-        self.entities = EntityHandler(self.game_values)
-
         pygame.init()
+        self.entities = EntityHandler(self.game_values)
         self.screen = pygame.display.set_mode(self.game_values.get_screen_size(), pygame.RESIZABLE, vsync=1)
         self.fps = pygame.time.Clock()
         pygame.display.set_caption(constant.GAME_NAME)
@@ -29,7 +27,7 @@ class Game:
 
     def run(self):
         while True:
-            if not self.game_values.get_socket is None:  # Socket connection established
+            if self.game_values.get_socket is not None:  # Socket connection established
                 if self.game_values.get_first_client() is True:
                     self.entities.get_paddle2().pos_y = self.game_values.get_socket().receive()
                 elif self.game_values.get_first_client is False:

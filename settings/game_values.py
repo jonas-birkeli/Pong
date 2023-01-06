@@ -1,10 +1,11 @@
+import typing
 import settings.constant as constant
 
 
 class GameSettings:
     def __init__(self):
         """
-        Object with setters and getters for variable values
+        Object with setters and getters for variable global values
         """
         self.screen_size = (1080, 720)
         self.game_title = constant.GAME_NAME
@@ -13,7 +14,7 @@ class GameSettings:
 
         self.mode = 1  # Single player as default
         self.difficulty = 1  # Easy as default
-        self.random_y_offset = 0.0
+        self.random_y_offset = 0.0  # Hard AI tries to hit the ball at a wierd angle to prevent predictions
 
         self.socket = None
         self.first_client = None
@@ -63,11 +64,12 @@ class GameSettings:
     def set_socket(self, data):
         self.socket = data
 
-    def get_socket(self):
+    def get_socket(self) -> typing.Union[object, None]:
         return self.socket
 
     def set_first_client(self, data):
         self.first_client = data
 
-    def get_first_client(self):
+    def get_first_client(self) -> bool:
         return self.first_client
+

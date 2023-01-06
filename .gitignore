@@ -3,5 +3,6 @@
 /dist
 /build
 /External Libraries
-/network
+/game_files/__pycache__
+/settings/__pycache__
 

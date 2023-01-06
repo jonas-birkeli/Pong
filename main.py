@@ -8,7 +8,7 @@ def main():
     menu = Menu(game_values)
     game = Game(game_values)
     while True:
-        menu.start()
+        menu.run()
         game.run()
 
 

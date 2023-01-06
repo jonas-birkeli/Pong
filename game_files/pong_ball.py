@@ -18,7 +18,7 @@ class Ball:
         self.pos_x = pygame.display.get_surface().get_width()/2 - constant.BALL_SIZE/2
         self.pos_y = pygame.display.get_surface().get_height()/2 - constant.BALL_SIZE/2
         self.vel_x, self.vel_y = 0, 0
-        self.calc_random_vel()
+        self.calc_random_vel()  # Starting velocity
 
         self.rect = pygame.Rect(self.pos_x, self.pos_y, constant.BALL_SIZE, constant.BALL_SIZE)
 
