@@ -1,6 +1,8 @@
 import pygame
 
 import settings.constant as constant
+import settings.text_norwegian as text
+# import settings.text_english as text
 import settings.keybind as keybind
 from game_files.entity_handler import EntityHandler
 
@@ -40,9 +42,9 @@ class Game:
                 return
 
             if self.pause:
-                self.display_text(constant.PAUSE_TEXT, middle_width, middle_height - 100)
-                self.display_text(constant.UNPAUSE_TEXT, middle_width, middle_height + 50)
-                self.display_text(constant.PAUSE_EXIT, middle_width, middle_height + 150)
+                self.display_text(text.PAUSE_TEXT, middle_width, middle_height - 100)
+                self.display_text(text.UNPAUSE_TEXT, middle_width, middle_height + 50)
+                self.display_text(text.PAUSE_EXIT, middle_width, middle_height + 150)
                 # Pause text
             else:
                 self.entities.get_ball().move()
@@ -63,13 +65,13 @@ class Game:
 
                 if self.player2_score == constant.POINT_LIMIT:
 
-                    if self.game_values.get_mode != 1:
-                        self.game_values.set_game_title(f'Spiller 2 vant med {self.player2_score} - {self.player1_score}')
+                    if self.game_values.get_mode() != 1:
+                        self.game_values.set_game_title(f'{text.PLAYER_2_WON} {self.player2_score} - {self.player1_score}')
                     else:
-                        self.game_values.set_game_title(f'AI vant med {self.player2_score} - {self.player1_score}')
+                        self.game_values.set_game_title(f'{text.AI_WON} {self.player2_score} - {self.player1_score}')
 
                 elif self.player1_score == constant.POINT_LIMIT:
-                    self.game_values.set_game_title(f'Spiller 1 vant med {self.player1_score} - {self.player2_score}')
+                    self.game_values.set_game_title(f'{text.PLAYER_1_WON} {self.player1_score} - {self.player2_score}')
 
                 if self.player1_score == constant.POINT_LIMIT or self.player2_score == constant.POINT_LIMIT:
                     # Common for both winners

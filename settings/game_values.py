@@ -1,4 +1,6 @@
 import settings.constant as constant
+import settings.text_norwegian as text
+# import settings.text_english as text
 
 
 class GameSettings:
@@ -8,8 +10,8 @@ class GameSettings:
         """
         self.screen_size = [1080, 720]
         self.game_title = constant.GAME_NAME
-        self.start_text = constant.START_TEXT
-        self.setting_text = constant.SETTING_TEXT
+        self.start_text = text.START_TEXT
+        self.setting_text = text.SETTING_TEXT
         # Placeholder text
 
         self.mode = 1  # Single player as default

@@ -2,6 +2,8 @@ import pygame
 import sys
 
 import settings.constant as constant
+import settings.text_norwegian as text
+# import settings.text_english as text
 import settings.keybind as keybind
 
 
@@ -35,7 +37,7 @@ class Menu:
 
             self.screen.fill(constant.BACKGROUND_COLOR)
             self.display_text(self.game_values.get_game_title(), middle_width, middle_height*0.5, self.big_font)
-            self.display_text(constant.GAME_DEV, middle_width, middle_height*0.75, self.small_font)
+            self.display_text(text.GAME_DEV, middle_width, middle_height*0.75, self.small_font)
 
             self.display_text(self.game_values.get_start_text(), middle_width, middle_height, self.normal_font)
             self.display_text(self.game_values.get_setting_text(), middle_width, middle_height*1.75, self.small_font)
@@ -43,20 +45,20 @@ class Menu:
             # Mode
             mode = self.game_values.get_mode()
             if mode == 2:
-                mode_text = constant.TWO_PLAYER_LOCAL
+                mode_text = text.TWO_PLAYER_LOCAL
             else:
-                mode_text = constant.ONE_PLAYER
+                mode_text = text.ONE_PLAYER
 
             self.display_text(mode_text, middle_width, middle_height*1.3, self.normal_font)
 
             # Difficulty
             difficulty = self.game_values.get_difficulty()
             if difficulty == 3:
-                dif_text = constant.IMPOSSIBLE_TEXT
+                dif_text = text.IMPOSSIBLE_DIFFICULTY
             elif difficulty == 2:
-                dif_text = constant.HARD_TEXT
+                dif_text = text.HARD_DIFFICULTY
             else:
-                dif_text = constant.EASY_TEXT
+                dif_text = text.EASY_DIFFICULTY
 
             if mode == 1:
                 self.display_text(dif_text, middle_width, middle_height*1.5, self.normal_font)

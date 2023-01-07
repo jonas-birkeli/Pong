@@ -4,7 +4,7 @@ pygame.mixer.init()
 
 FPS = 60
 GAME_NAME = 'Pong 1.6'
-POINT_LIMIT = 10  # Playing to and included
+POINT_LIMIT = 5  # Playing to and included
 SCREEN_MIN_WIDTH = 800
 SCREEN_MIN_HEIGHT = 500
 
@@ -25,20 +25,7 @@ BALL_SIZE = 10
 BALL_START_SPEED = 10
 BALL_SPEED_INCREMENT = 1
 
-GAME_DEV = 'Laget av Jonas'
-START_TEXT = 'Trykk mellomrom for å starte'
-SETTING_TEXT = 'Bruk piltastene for å endre instillinger'
 
-EASY_TEXT = '< Nybegynner >'
-HARD_TEXT = '< Vanskelig >'
-IMPOSSIBLE_TEXT = '< Umulig >'
-
-ONE_PLAYER = '1-spiller'
-TWO_PLAYER_LOCAL = '2-spiller'
-
-PAUSE_TEXT = 'Spill pauset!'
-UNPAUSE_TEXT = 'Trykk ESC for å fortsette'
-PAUSE_EXIT = 'Trykk Enter for å avslutte'
 
 START_SOUND = pygame.mixer.Sound('etc/start_win.wav')
 SETTING_CHANGE_SOUND = pygame.mixer.Sound('etc/setting.wav')
