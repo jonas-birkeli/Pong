@@ -5,7 +5,7 @@ pygame.mixer.init()
 FPS = 60
 GAME_NAME = 'Pong 1.6'
 POINT_LIMIT = 10  # Playing to and included
-SCREEN_MIN_WIDTH = 500
+SCREEN_MIN_WIDTH = 800
 SCREEN_MIN_HEIGHT = 500
 
 # Color
