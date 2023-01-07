@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from game_files.menu import Menu
 from game_files.game import Game
 from settings.game_values import GameSettings
