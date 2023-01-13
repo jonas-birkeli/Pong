@@ -2,11 +2,11 @@
 
 from game_files.menu import Menu
 from game_files.game import Game
-from settings.game_values import GameSettings
+from settings.game_values import GameValues
 
 
 def main():
-    game_values = GameSettings()
+    game_values = GameValues()
 
     menu = Menu(game_values)
     game = Game(game_values)

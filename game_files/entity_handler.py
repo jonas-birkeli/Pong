@@ -3,7 +3,7 @@ import random
 
 import settings.constant as constant
 
-from game_files.paddle import Paddle, PaddleAI
+from game_files.paddle import Paddle
 from game_files.pong_ball import Ball
 
 
@@ -12,15 +12,9 @@ class EntityHandler:
         self.game_values = game_values
 
         self.paddle1 = Paddle(self.game_values, constant.PADDLE_1_POS)
+        self.paddle2 = Paddle(self.game_values, pygame.display.get_surface().get_width() - constant.PADDLE_2_POS)
 
-        if self.game_values.mode == 1:
-            self.paddle2 = PaddleAI(self.game_values, pygame.display.get_surface().get_width() - constant.PADDLE_2_POS)
-            # 1-player
-        else:
-            self.paddle2 = Paddle(self.game_values, pygame.display.get_surface().get_width() - constant.PADDLE_2_POS)
-            # 2-player, standard paddle
-
-        self.ball = Ball(self, self.game_values)  # Passing self ref for collision handling of paddles
+        self.ball = Ball(self, self.game_values)  # Passing self reference for collision handling of paddles
 
     def get_paddle1(self):
         return self.paddle1
@@ -41,6 +35,8 @@ class EntityHandler:
             self.get_ball().speed += constant.BALL_SPEED_INCREMENT
             constant.PADDLE_HIT_SOUND.play()
 
+            # We want a random y offset for hard AI to make predictions harder.
+            # Only calculating this when the ball hits the main paddle.
             rand = random.randint(0, constant.PADDLE_HEIGHT / 2)
             self.game_values.set_random_y_offset(rand)
 

@@ -3,7 +3,7 @@ import settings.text_norwegian as text
 # import settings.text_english as text
 
 
-class GameSettings:
+class GameValues:
     def __init__(self):
         """
         Object with setters and getters for variable global values
@@ -12,11 +12,14 @@ class GameSettings:
         self.game_title = constant.GAME_NAME
         self.start_text = text.START_TEXT
         self.setting_text = text.SETTING_TEXT
-        # Placeholder text
+        # Text in menu, used for different info
 
         self.mode = 1  # Single player as default
         self.difficulty = 1  # Easy as default
-        self.random_y_offset = 0.0  # Hard AI tries to hit the ball at a wierd angle to prevent predictions
+        self.random_y_offset = 0.0
+        # Medium and Hard AI uses random offsets to prevent predictions
+
+        self.music_muted = False
 
     def get_game_title(self) -> str:
         return self.game_title
@@ -59,3 +62,9 @@ class GameSettings:
 
     def set_random_y_offset(self, num: float):
         self.random_y_offset = num
+
+    def get_music_muted(self) -> bool:
+        return self.music_muted
+
+    def set_music_muted(self, state: bool):
+        self.music_muted = state

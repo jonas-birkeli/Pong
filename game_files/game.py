@@ -26,6 +26,10 @@ class Game:
         self.player2_score = 0
 
     def run(self):
+        if not self.game_values.get_music_muted():
+            constant.GAME_BACKGROUND_MUSIC.play(loops=-1)
+            # Background music if music not muted
+
         while True:
             surface = pygame.display.get_surface()
             middle_width = surface.get_width() / 2
@@ -33,12 +37,12 @@ class Game:
 
             self.screen.fill(constant.BACKGROUND_COLOR)  # Reset scene
 
-            self.display_text(self.player1_score, middle_width*0.7, middle_height*0.2)
-            self.display_text(self.player2_score, middle_width*1.3, middle_height*0.2)
+            self.display_text(f'{self.player1_score}', middle_width*0.7, middle_height*0.2)
+            self.display_text(f'{self.player2_score}', middle_width*1.3, middle_height*0.2)
 
-            if self.key_handler() == 1:  # 1 means exit game
-                self.reset_class(wipe=True)
-
+            if self.key_handler():  # Means exit game
+                self.reset_class()
+                pygame.mixer.stop()
                 return
 
             if self.pause:
@@ -78,6 +82,7 @@ class Game:
                     self.store_window_size()
                     self.reset_class()
                     constant.WIN_SOUND.play()
+                    pygame.mixer.stop()
                     # Cleaning up class data
 
                     return
@@ -100,18 +105,26 @@ class Game:
                 height = max(height, constant.SCREEN_MIN_HEIGHT)
 
                 self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE, vsync=True)
-                self.game_values.set_screen_size((width, height))
+                self.store_window_size()
 
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == pygame.KEYUP:
+
+            if event.type == pygame.KEYDOWN:
+                key_down = pygame.key.get_pressed()
                 if key_down[keybind.QUIT_GAME] and self.pause:  # Exit only when paused
-                    # TODO
                     return 1
-                if key_down[keybind.PAUSE_GAME]:  # Pause and unpause
-                    constant.PAUSE_SOUND.play()
+
+                if key_down[keybind.PAUSE_GAME]:
+
+                    if self.pause:
+                        pygame.mixer.unpause()
+                    else:
+                        pygame.mixer.pause()
+
                     self.pause = not self.pause
+                    constant.PAUSE_SOUND.play()
 
         if not self.pause:  # Only allow movement when game is not paused
             if key_down[keybind.PADDLE_1_UP]:
@@ -129,10 +142,12 @@ class Game:
                 if key_down[keybind.PADDLE_2_DOWN]:
                     self.entities.get_paddle1().upd_pos(1)
                 self.entities.get_paddle2().move(self.entities.get_ball().pos_y)
-                # Paddle AI uses a different move function than the standard paddle, only enabled if mode is set to 1, or AI
+                # Paddle AI uses a different move function than the standard paddle
+                # Only enabled if mode is set to 1, also known as 1-player
             else:
                 if key_down[keybind.PADDLE_2_UP]:
                     self.entities.get_paddle2().upd_pos(-1)
+
                 if key_down[keybind.PADDLE_2_DOWN]:
                     self.entities.get_paddle2().upd_pos(1)
 
@@ -155,8 +170,8 @@ class Game:
         self.entities.get_paddle1().pos_y = surface.get_height()/2 - constant.PADDLE_HEIGHT/2
         self.entities.get_paddle2().pos_y = surface.get_height()/2 - constant.PADDLE_HEIGHT/2
 
-    def display_text(self, text, x, y):
-        txt = self.font.render(f'{text}', True, constant.TEXT_COLOR, None)
+    def display_text(self, text: str, x: float, y: float, text_color=constant.TEXT_COLOR):
+        txt = self.font.render(f'{text}', True, text_color, None)
         txt_rect = txt.get_rect()
         txt_rect.center = x, y
         self.screen.blit(txt, txt_rect)
